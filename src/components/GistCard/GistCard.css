@@ -1,0 +1,10 @@
+@import '../../common/styles.css';
+
+.mt-10{
+    margin-top: 10%;
+}
+
+.min{
+    min-width: 100%;
+    margin: 1%;
+}

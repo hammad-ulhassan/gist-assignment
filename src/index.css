@@ -1,3 +1,20 @@
+@import '~antd/dist/antd.css';
+
+:root{
+  --white: #ffffff;
+  --black: #1d1d1d;
+  --red: #ff2e09;
+  --orange: #ff955c;
+  --gray: #919191;
+  --green: #21a69d;
+  --blue: #4487d0;
+  --egreen: #5ACBA1;
+  --size: 0.8rem;
+  --scale: 1.2;
+  --l:50%;
+  --egreen-light: #DEF5EC;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +22,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 code {

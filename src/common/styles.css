@@ -1,0 +1,8 @@
+.emumba-bg{
+    background-color: var(--egreen);
+}
+
+.card-style{
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.25rem var(--gray);
+}

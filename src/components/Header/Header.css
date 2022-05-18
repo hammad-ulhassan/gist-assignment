@@ -1,0 +1,6 @@
+@import url("../../common/styles.css");
+
+.header-style{
+    width: 100%;
+    box-shadow: 0 0.15rem 0.9rem var(--gray);
+}
