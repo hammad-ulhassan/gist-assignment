@@ -10,10 +10,9 @@ export default class MainLayout extends React.Component {
   }
 
   render() {
-    const {loggedIn} = this.props;
     return (
       <section id="page">
-        <Header loggedIn = {loggedIn}/>
+        <Header/>
         <main>
           <ContentWrapper>
             <Outlet/>

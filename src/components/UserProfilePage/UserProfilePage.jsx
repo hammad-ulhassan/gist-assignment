@@ -1,70 +1,78 @@
 import React from "react";
-import { getGistsForAuthenticatedUser } from "../../data/gists";
+import { getGistsForUser } from "../../data/gists";
+import { getUserData } from "../../data/users";
 import {
-  ColSAWrapper,
-  CSBWrapper,
+  CFSWrapper,
+  ColFSWrapper,
   HomePageLayout,
   UserProfileWrapper,
 } from "../../shared/styles";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { Button, Card, Tag } from "antd";
+import { Button } from "antd";
+import AvatarWithData from "../AvatarWithData/AvatarWithData";
+import GistPreview from "../GistPreview/GistPreview";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { PlusOutlined } from "@ant-design/icons";
-
 
 class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loaded: false, gists: [] };
+    this.state = { loaded: false, gists: [], userData: null };
     this.handleCreateGist = this.handleCreateGist.bind(this);
   }
 
-  handleCreateGist(){
-    this.props.navigate('/create');
+  handleCreateGist() {
+    this.props.navigate("/create");
   }
 
   componentDidMount() {
-    getGistsForAuthenticatedUser().then((gists) =>
-      this.setState({ loaded: true, gists })
-    );
+    const { state: userData } = this.props.location;
+    getGistsForUser(userData)
+      .then((gists) => {
+        this.setState({ loaded: true, gists });
+        return userData;
+      })
+      .then((userData) => getUserData(userData.url))
+      .then((userData) => {
+        this.setState({ userData });
+      });
   }
 
   render() {
-    const userData = JSON.parse(localStorage.getItem('user-data'));
-
     return (
       <HomePageLayout>
-        <CSBWrapper>
-          <h2>{userData.name}</h2>
-          <Button icon={<PlusOutlined />} onClick={this.handleCreateGist}>
-            Create Gist
-          </Button>
-        </CSBWrapper>
+        <CFSWrapper>
+          <h3>User Gists</h3>
+        </CFSWrapper>
         <UserProfileWrapper>
-          <ColSAWrapper>
-            <UserAvatar size={256} src={userData?.avatar_url}/>
-            <h2>{userData.name}</h2>
-            <h4>{userData.bio}</h4>
+          <ColFSWrapper>
+            <UserAvatar size={256} src={this.state.userData?.avatar_url} />
+            <span style={{"whiteSpace":"break-spaces", "padding":"0, 5rem"}}>
+              <h2>{this.state.userData?.name}</h2>
+            </span>
+            <span style={{"whiteSpace":"break-spaces", "padding":"0, 5rem"}}>
+              <h4>{this.state.userData?.bio}</h4>
+            </span>
             <Button>GitHub Profile</Button>
-          </ColSAWrapper>
-          <ColSAWrapper>
+          </ColFSWrapper>
+          <ColFSWrapper>
             {this.state.loaded &&
               this.state.gists.map((gist, index) => (
-                <Link to="/create" style={{ minWidth: "100%", margin: "1%" }} state={gist} key={index}>
-                  <Card
-                    title={gist.description}
-                    size="default"
-                    style={{ minWidth: "100%", margin: "1%" }}
-                    hoverable
-                  >
-                    {Object.keys(gist.files).map((filename , index) => (
-                      <Tag key={index}>{filename}</Tag>
-                    ))}
-                  </Card>
-                </Link>
+                <React.Fragment key={index}>
+                  <AvatarWithData
+                    owner={this.state.userData}
+                    userName={this.state.userData?.login}
+                    createdAt={moment(gist.created_at).format('DD-MM-YYYY')}
+                    avatarSize={32}
+                    key={gist.created_at}
+                  />
+                  <Link to="/gist" state={gist}>
+                    <GistPreview gist={gist} limit={true} key={gist.id}/>
+                  </Link>
+                </React.Fragment>
               ))}
-          </ColSAWrapper>
+          </ColFSWrapper>
         </UserProfileWrapper>
       </HomePageLayout>
     );

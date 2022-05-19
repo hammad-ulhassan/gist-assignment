@@ -12,6 +12,11 @@ export const GistCardStyled = styled(AntCard)`
 
 `;
 
+export const CreatedAtText = styled.span`
+font-style: normal;
+font-weight: lighter;
+`;
+
 export const CSBWrapper = styled.div`
   flex-direction: row;
   display: flex;
@@ -19,6 +24,11 @@ export const CSBWrapper = styled.div`
   align-items: center;
   height: 100%;
   gap: ${(props) => props.gap || 0}%;
+  width: ${(props) => props.width}%;
+`;
+
+export const CCWrapper = styled(CSBWrapper)`
+justify-content: center;
 `;
 
 export const NumberDisplay = styled.span`
@@ -39,7 +49,17 @@ export const ColSAWrapper = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
+  width: 100%;
   gap: ${(props) => props.gap};
+  justify-content: center;
+`;
+
+export const ColFSWrapper = styled(ColSAWrapper)`
+justify-content: flex-start;
+`;
+
+export const AvatarWrapper = styled.div`
+
 `;
 
 export const CSAWrapper = styled(CSBWrapper)`
@@ -70,6 +90,11 @@ export const HomePageLayout = styled.div`
   //background-color: black;
 `;
 
+export const CodeWrapper = styled.div`
+  overflow-wrap: break-word;
+  background-color: var(--light-gray);
+`;
+
 export const UserProfileWrapper = styled.section`
   display: grid;
   width: 100%;
@@ -97,10 +122,12 @@ export const UserCard = styled(AntCard)`
 export const Line = styled.pre`
   font-size: 0.7rem;
   margin-left: 0;
+  white-space: pre-wrap;
   counter-increment: line;
   &:before {
     content: counter(line);
     color: var(--gray);
+    padding: 0 1em;
   }
 `;
 
@@ -112,3 +139,8 @@ export const StyleButton = styled(Button)`
     border-color: var(--egreen);
   }
 `;
+
+
+export const UserNameText = styled.span`
+font-weight: bold;
+`

@@ -1,7 +1,10 @@
 export const headers = {
   Accept: "application/vnd.github.v3+json",
-  Authorization: "Bearer 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",
+  Authorization: "Bearer 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",
 };
+
+//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
+//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  <--old
 
 // export const getAllPublicGistsUrl = "https://api.github.com/gists/public?";
 
@@ -33,10 +36,10 @@ export const updateGist = async (gist_id, gistPostData)=>{
   return res;
 }
 
-export async function getGistsForAuthenticatedUser(){
+export async function getGistsForUser({login}){
   // "/users/:username/gists"
-  const {username} = JSON.parse(localStorage.getItem('credentials'));
-  const resp = await fetch(`https://api.github.com/users/${username}/gists`, {headers: headers});
+  // const {username} = JSON.parse(localStorage.getItem('credentials'));
+  const resp = await fetch(`https://api.github.com/users/${login}/gists`, {headers: headers});
   const res = await resp.json();
   return res;
 }

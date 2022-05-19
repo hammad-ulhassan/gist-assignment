@@ -2,11 +2,17 @@ import React from "react";
 import "./Header.css";
 import Logo from "../Logo/Logo";
 import { SearchOutlined } from "@ant-design/icons";
-import { CFSWrapper, ContentWrapper, CSBWrapper } from "../../shared/styles";
+import {
+  CFSWrapper,
+  ContentWrapper,
+  CSBWrapper,
+  AvatarWrapper,
+} from "../../shared/styles";
 import { SearchBox } from "../SearchBox/SearchBox";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
-import { Dropdown, Button, Menu, Avatar, Divider } from "antd";
+import { Dropdown, Button, Menu } from "antd";
 import { Link } from "react-router-dom";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const ourMenu = (items) => <Menu items={[...items]} />;
 
@@ -28,14 +34,14 @@ class Header extends React.Component {
   }
 
   render() {
-    const { loggedIn } = this.props;
+    const loggedIn = localStorage.getItem("logged-in");
     if (loggedIn) {
       var userData = JSON.parse(localStorage.getItem("user-data"));
       this.menuItems = [
         {
           label: (
             <>
-              <Link to="/user">
+              <Link to="/me" state={userData}>
                 <h5>Signed in as</h5>
                 <h4>{userData?.name}</h4>
               </Link>
@@ -43,27 +49,27 @@ class Header extends React.Component {
           ),
         },
         {
-          label: <Divider />,
+          label: <hr />,
           disabled: true,
         },
         {
-          label: <Link to="/user">Your Gists</Link>,
+          label: <Link to="/me">Your Gists</Link>,
         },
         {
-          label: <Link to="/user">Your Starred Gists</Link>,
+          label: <Link to="/me">Your Starred Gists</Link>,
         },
         {
-          label: <Link to="/user">Help</Link>,
+          label: <Link to="/me">Help</Link>,
         },
         {
-          label: <Divider />,
+          label: <hr />,
           disabled: true,
         },
         {
-          label: <Link to="/user">Your Github Profile</Link>,
+          label: <Link to="/me">Your Github Profile</Link>,
         },
         {
-          label: <Link to="/user">Sign Out</Link>,
+          label: <Link to="/me">Sign Out</Link>,
         },
       ];
     }
@@ -88,7 +94,9 @@ class Header extends React.Component {
                   placement="bottom"
                   arrow
                 >
-                  <Avatar src={userData?.avatar_url} size={50} />
+                  <AvatarWrapper>
+                    <UserAvatar src={userData?.avatar_url} size={50} />
+                  </AvatarWrapper>
                 </Dropdown>
               )}
             </CFSWrapper>

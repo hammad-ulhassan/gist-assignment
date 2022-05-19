@@ -2,8 +2,8 @@ import "./GistCard.css";
 
 import React from "react";
 import { Card as AntCard } from "antd";
-import { Line } from "../../shared/styles";
 import { CodeOutlined } from "@ant-design/icons";
+import CodeView from "../CodeView/CodeView";
 
 export default class GistCard extends React.Component {
   render() {
@@ -17,9 +17,7 @@ export default class GistCard extends React.Component {
         }
         className="card-style min"
       >
-        {content.split("\n").map((line, i) => (
-          <Line key={i}>{line}</Line>
-        ))}
+        <CodeView content={content}></CodeView>
       </AntCard>
     );
   }

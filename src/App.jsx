@@ -5,6 +5,7 @@ import GistsPage from "./components/GistsPage/GistsPage";
 import HomePage from "./components/HomePage/HomePage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import MainLayout from "./components/MainLayout/MainLayout";
+import MyProfilePage from "./components/MyProfilePage/MyProfilePage";
 import UserProfilePage from "./components/UserProfilePage/UserProfilePage";
 import { getAuthenticatedUserData } from "./data/gists";
 
@@ -23,6 +24,7 @@ class App extends React.Component {
       localStorage.setItem("credentials", JSON.stringify(credentials));
       getAuthenticatedUserData().then(userData=>{
         localStorage.setItem('user-data', JSON.stringify(userData));
+        localStorage.setItem('logged-in', true);
         this.setState({userData: userData, loggedIn: true})
       })
     }
@@ -32,7 +34,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainLayout loggedIn={this.state.loggedIn}/>}>
+          <Route path="/" element={<MainLayout/>}>
             <Route path="home" element={<HomePage />} />
             <Route path="gist" element={<GistsPage />} />
             <Route
@@ -41,6 +43,7 @@ class App extends React.Component {
             />
             <Route path="create" element={<CreateGistPage />} />
             <Route path="user" element={< UserProfilePage/>} />
+            <Route path="me" element={< MyProfilePage/>} />
           </Route>
         </Routes>
       </BrowserRouter>

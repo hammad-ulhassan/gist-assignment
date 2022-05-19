@@ -3,16 +3,14 @@ import { getGist } from "../../data/gists";
 import {
   CSBWrapper,
   HomePageLayout,
-  ColSAWrapper,
-  NumberDisplay,
-  TextLine,
+  ColFSWrapper,
 } from "../../shared/styles";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
 import GistCard from "../GistCard/GistCard";
-import { Avatar } from "antd";
-import { UserOutlined, StarOutlined, ForkOutlined } from "@ant-design/icons";
 import { getUserData } from "../../data/users";
 import moment from "moment";
+import GistUtils from "../GistUtils/GistUtils";
+import AvatarWithData from "../AvatarWithData/AvatarWithData";
 
 class GistsPage extends React.Component {
   constructor(props) {
@@ -50,39 +48,18 @@ class GistsPage extends React.Component {
   }
 
   render() {
+    const loggedIn = localStorage.getItem("logged-in");
+    const userData = JSON.parse(localStorage.getItem("user-data"))
+    const showPersonalControls = ((this.state.owner?.id === userData.id) && loggedIn);
+
     return (
       <HomePageLayout>
         <CSBWrapper>
-          {/* {this.state.owner?<UserData isInTable={false} record={this.state.owner}/>:<></>} */}
-          <CSBWrapper gap={1}>
-            <Avatar
-              src={this.state?.owner?.avatar_url}
-              size={64}
-              icon={<UserOutlined />}
-            ></Avatar>
-            <ColSAWrapper>
-              <TextLine>{this.state.userName}</TextLine>
-              <TextLine>{this.state.created_at}</TextLine>
-            </ColSAWrapper>
-          </CSBWrapper>
-          <CSBWrapper gap={3}>
-            <div style={{"margin": "0 1rem"}}>
-              <CSBWrapper>
-                <StarOutlined />
-                <TextLine>Star</TextLine>
-                <NumberDisplay>0</NumberDisplay>
-              </CSBWrapper>
-            </div>
-            <div>
-              <CSBWrapper>
-                <ForkOutlined />
-                <TextLine>Fork</TextLine>
-                <NumberDisplay>{this.state.forks.length}</NumberDisplay>
-              </CSBWrapper>
-            </div>
-          </CSBWrapper>
+          <AvatarWithData owner={this.state.owner} createdAt={this.state.created_at} userName={this.state.userName} avatarSize={64}/>
+          <GistUtils forks={this.state.forks} showPersonalControls={showPersonalControls}/>
+          
         </CSBWrapper>
-        <ColSAWrapper gap="0.5vh">
+        <ColFSWrapper gap="0.5vh">
           {Object.keys(this.state.files)
             .map((fn) => this.state.files[fn])
             .map((file, index) => (
@@ -93,7 +70,7 @@ class GistsPage extends React.Component {
                 key={index}
               />
             ))}
-        </ColSAWrapper>
+        </ColFSWrapper>
       </HomePageLayout>
     );
   }

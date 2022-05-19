@@ -6,6 +6,7 @@
   --red: #ff2e09;
   --orange: #ff955c;
   --gray: #919191;
+  --light-gray: #eee;
   --green: #21a69d;
   --blue: #4487d0;
   --egreen: #5ACBA1;
@@ -22,7 +23,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
 }
 
 code {
