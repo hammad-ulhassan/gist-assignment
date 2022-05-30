@@ -1,14 +1,6 @@
 import headers from '../credentials';
 
 
-
-//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
-//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   <--- old3
-//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  <--old2
-//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  <--old
-
-// export const getAllPublicGistsUrl = "https://api.github.com/gists/public?";
-
 export async function getAllPublicGists(page){
   const resp = await fetch("https://api.github.com/gists/public?" + new URLSearchParams({per_page: 10,page: page,}),{headers});
   const res = await resp.json();
