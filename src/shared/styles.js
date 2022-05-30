@@ -1,20 +1,12 @@
 import styled from "styled-components";
 import { Button, Card as AntCard } from "antd";
+import { Link } from "react-router-dom";
+import { Input as antInput } from "antd";
 
-export const OYAWrapper = styled.div`
-  height: 100%;
-  overflow-y: auto;
-`;
-
-export const GistCardStyled = styled(AntCard)`
-  max-width: 90vw;
-  min-width: 100%;
-
-`;
 
 export const CreatedAtText = styled.span`
-font-style: normal;
-font-weight: lighter;
+  font-style: normal;
+  font-weight: lighter;
 `;
 
 export const CSBWrapper = styled.div`
@@ -28,20 +20,20 @@ export const CSBWrapper = styled.div`
 `;
 
 export const CCWrapper = styled(CSBWrapper)`
-justify-content: center;
+  justify-content: center;
 `;
 
 export const NumberDisplay = styled.span`
-border: 1px solid var(--gray);
-border-radius: 5px;
-padding: 0 0.8rem;
-margin: 0;
+  border: 1px solid var(--gray);
+  border-radius: 5px;
+  padding: 0 0.8rem;
+  margin: 0;
 `;
 
 export const TextLine = styled.span`
-margin: 0;
-padding: 0 0.25rem;
-word-wrap: normal;
+  margin: 0;
+  padding: 0 0.25rem;
+  word-wrap: normal;
 `;
 
 export const ColSAWrapper = styled.div`
@@ -55,17 +47,14 @@ export const ColSAWrapper = styled.div`
 `;
 
 export const ColFSWrapper = styled(ColSAWrapper)`
-justify-content: flex-start;
+  justify-content: flex-start;
 `;
 
-export const AvatarWrapper = styled.div`
-
-`;
+export const AvatarWrapper = styled.div``;
 
 export const CSAWrapper = styled(CSBWrapper)`
   justify-content: space-around;
 `;
-
 
 export const CFEWrapper = styled(CSBWrapper)`
   justify-content: flex-end;
@@ -90,31 +79,26 @@ export const HomePageLayout = styled.div`
   //background-color: black;
 `;
 
-export const CodeWrapper = styled.div`
-  overflow-wrap: break-word;
-  background-color: var(--light-gray);
-`;
-
 export const UserProfileWrapper = styled.section`
   display: grid;
   width: 100%;
   height: 100%;
   grid-template-rows: 1fr;
-  grid-template-columns: 40% auto;
+  grid-template-columns: 30% auto;
+  gap: 2%;
+  
+  overflow: auto;
 `;
 
 export const CardsLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 3rem;
+  gap: 2%;
   margin: 0;
   padding: 0;
 `;
 
 export const UserCard = styled(AntCard)`
-  max-width: 28rem;
-  max-height: 22rem;
-  min-height: 22rem;
   border-radius: 0.25rem;
   box-shadow: 0 0.25rem 0.25rem var(--gray);
 `;
@@ -124,23 +108,73 @@ export const Line = styled.pre`
   margin-left: 0;
   white-space: pre-wrap;
   counter-increment: line;
-  &:before {
+  word-wrap: break-word;
+  overflow:auto &:before {
     content: counter(line);
     color: var(--gray);
     padding: 0 1em;
   }
 `;
 
+export const CodeWrapper = styled.div`
+  overflow: auto;
+  background-color: var(--light-gray);
+  width: 100%;
+`;
+
 export const StyleButton = styled(Button)`
   background: var(--egreen);
   border-color: var(--egreen);
-  &:focus{
+  &:focus {
     background: var(--egreen);
     border-color: var(--egreen);
   }
 `;
 
-
 export const UserNameText = styled.span`
+  font-weight: bold;
+`;
+
+export const UserProfileGistsList = styled.div`
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "flex-start";
+  overflow: auto;
+  border: 1px solid var(--light-gray);
+  border-radius: 1%;
+  gap: 2%;
+`;
+
+export const FCFCWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: auto;
+  align-items:center;
+`;
+
+
+export const TextWordBreak = styled.span`
+text-align: center;
+overflow-wrap: break-word;
+`;
+
+export const GistDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+export const StyledLink = styled(Link)`
 font-weight: bold;
-`
+`;
+
+
+export const SearchBox = styled(antInput)`
+  background-color: var(--egreen);
+  color: var(--white);
+  & > .ant-input {
+    background-color: var(--egreen);
+    color: var(--white);
+  }
+`;

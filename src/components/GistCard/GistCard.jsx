@@ -7,7 +7,8 @@ import CodeView from "../CodeView/CodeView";
 
 export default class GistCard extends React.Component {
   render() {
-    const { filename, content } = this.props;
+    const { filename, content, language } = this.props;
+
     return (
       <AntCard
         title={
@@ -17,7 +18,7 @@ export default class GistCard extends React.Component {
         }
         className="card-style min"
       >
-        <CodeView content={content}></CodeView>
+        <CodeView loaded={true} language={language} content={content}></CodeView>
       </AntCard>
     );
   }

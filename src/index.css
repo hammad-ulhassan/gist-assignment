@@ -14,6 +14,7 @@
   --scale: 1.2;
   --l:50%;
   --egreen-light: #DEF5EC;
+  font-size: 16px;
 }
 
 body {
@@ -23,6 +24,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 code {

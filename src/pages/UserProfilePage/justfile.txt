@@ -1,0 +1,55 @@
+<ColFSWrapper>
+            <UserAvatar size={256} src={this.state.userData?.avatar_url} />
+            <span style={{ whiteSpace: "break-spaces", padding: "0, 5rem" }}>
+              <h2>{this.state.userData?.name}</h2>
+            </span>
+            <span style={{ whiteSpace: "break-words", padding: "0, 5rem" }}>
+              <h4>{this.state.userData?.bio}</h4>
+            </span>
+            <Button>GitHub Profile</Button>
+          </ColFSWrapper>
+          <ColFSWrapper gap={"0.25%"}>
+            {this.state.loaded &&
+              this.state.gists.map((gist, index) => (
+                <GistContainer key={index}>
+                  {/* <AvatarWithData
+                    owner={this.state.userData}
+                    userName={this.state.userData?.login}
+                    createdAt={moment(gist.created_at).format('DD-MM-YYYY')}
+                    avatarSize={32}
+                    key={gist.created_at}
+                  />
+                  <Link to="/gist" state={gist} style={{minWidth:"100%"}}>
+                    <GistPreview gist={gist} limit={true} key={gist.id}/>
+                  </Link> */}
+                  <CFSWrapper>
+                    <UserAvatar
+                      src={this.state.userData?.avatar_url}
+                      size={64}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginLeft: "1%",
+                      }}
+                    >
+                      <span>{this.state.userData?.login}</span>
+                      <span>
+                        {moment(gist.created_at).format("DD-MM-YYYY")}
+                      </span>
+                    </div>
+                  </CFSWrapper>
+
+                  <Link
+                    to="/gist"
+                    state={gist}
+                    style={{ "overflowX":"auto" }}
+                  >
+                    <div style={{ backgroundColor: "yellowgreen", "overflowX":"auto" }}>
+                    Loremipsumdolorsitametconsectetur,adipisicingelit.Autquiaquidemab,quisquaeratnonutvoluptasmagnieumomnisautemoditnamsaepe,asperiores,laudantiumiure?Nam,autem?Impedit?Loremipsumdolorsitametconsecteturadipisicingelit.Iureperferendistenetureiusneque,facilisabrepudiandaenameatotamnemo,consequaturprovidentquae?Tempore,reprehenderitlibero.Aliquam,autem!Sint,aliquid.Loremipsumdolorsitamet,consecteturadipisicingelit.Totamexpeditarerumexcepturitemporibussint,dolorumdolor,veritatiseaimpeditinciduntexearumpariaturenimquosrepudiandaeprovidentconsequatureosmodiquidem.Nequedignissimosfacerepossimussaepeetanimiadasperioreseosteneturrerumquiadoloremquequasmolestiaeipsum,exercitationemoptiodeserunt,similiquerepudiandaefacilis.Ametmollitiaaliasaliquamcupiditatesapiente,hicquibusdamsequiquovoluptatesnondicta.Quialaboriosammolestiaedoloribusperspiciatisexpeditaperferendissequi.Atquerationeveritatispariatur,etquamexnammolestiasdebitisinharummaximelaboreobcaecatiquibusdamdelenitidelectusevenietducimus!Iustofugitdelenitiatquenatus.
+                    </div>
+                  </Link>
+                </GistContainer>
+              ))}
+          </ColFSWrapper>

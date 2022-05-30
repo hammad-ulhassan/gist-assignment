@@ -1,18 +1,20 @@
 import React from "react";
 import "./Header.css";
 import Logo from "../Logo/Logo";
-import { SearchOutlined } from "@ant-design/icons";
 import {
   CFSWrapper,
   ContentWrapper,
   CSBWrapper,
   AvatarWrapper,
+  SearchBox
 } from "../../shared/styles";
-import { SearchBox } from "../SearchBox/SearchBox";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
 import { Dropdown, Button, Menu } from "antd";
 import { Link } from "react-router-dom";
 import UserAvatar from "../UserAvatar/UserAvatar";
+import { connect } from "react-redux";
+import { selectAuthUserData, selectIsLoggedIn } from "../../redux/credentialSlice";
+import { searchGists } from "../../redux/searchSlice";
 
 const ourMenu = (items) => <Menu items={[...items]} />;
 
@@ -20,30 +22,36 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.handleLoginButton = this.handleLoginButton.bind(this);
-    this.state = {
-      userData: null,
-    };
     this.menuItems = [];
+    this.handleLogoutButton = this.handleLogoutButton.bind(this);
+    this.handleSearch = this.handleSearch.bind(this)
   }
 
-  componentDidMount() {}
-
   handleLoginButton() {
-    // this.setState({ loggedIn: true });
     this.props.navigate("/login");
   }
 
+  handleLogoutButton(){
+    this.props.handleLogout()
+  }
+
+  handleSearch(e){
+    // console.log(e)
+    // this.props.handleSearch(e.target.value)
+    this.props.searchGists(e.target.value);
+    this.props.navigate("/search")
+  }
+
   render() {
-    const loggedIn = localStorage.getItem("logged-in");
-    if (loggedIn) {
-      var userData = JSON.parse(localStorage.getItem("user-data"));
+
+    if (this.props.isLoggedIn && this.props.authUserData) {
       this.menuItems = [
         {
           label: (
             <>
-              <Link to="/me" state={userData}>
+              <Link to="/me">
                 <h5>Signed in as</h5>
-                <h4>{userData?.name}</h4>
+                <h4>{this.props.authUserData?.name}</h4>
               </Link>
             </>
           ),
@@ -69,7 +77,7 @@ class Header extends React.Component {
           label: <Link to="/me">Your Github Profile</Link>,
         },
         {
-          label: <Link to="/me">Sign Out</Link>,
+          label: <Button onClick={this.handleLogoutButton} type="link">Sign Out</Button>,
         },
       ];
     }
@@ -81,12 +89,8 @@ class Header extends React.Component {
               <Logo fillColor="#ffffff" />
             </Link>
             <CFSWrapper gap={4}>
-              <SearchBox
-                placeholder="Search Notes..."
-                bordered={true}
-                suffix={<SearchOutlined />}
-              />
-              {!loggedIn ? (
+            <SearchBox.Search placeholder="Search..." allowClear onSearch={this.handleSearch} />
+              {!(this.props.isLoggedIn && this.props.authUserData) ? (
                 <Button onClick={this.handleLoginButton}>Login</Button>
               ) : (
                 <Dropdown
@@ -95,7 +99,7 @@ class Header extends React.Component {
                   arrow
                 >
                   <AvatarWrapper>
-                    <UserAvatar src={userData?.avatar_url} size={50} />
+                    <UserAvatar src={this.props.authUserData?.avatar_url} size={50} />
                   </AvatarWrapper>
                 </Dropdown>
               )}
@@ -107,4 +111,19 @@ class Header extends React.Component {
   }
 }
 
-export default RouterComponent(Header);
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: selectIsLoggedIn(state),
+    authUserData: selectAuthUserData(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    searchGists: (searchInput) => {
+      dispatch(searchGists(searchInput));
+    },
+  };
+}
+
+export default RouterComponent(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -6,6 +6,7 @@
     "head"
     "main";
   grid-template-rows: 10vh auto;
+  gap:1%;
 }
 
 #page>header {
@@ -17,4 +18,5 @@
   height: 100%;
   grid-area: main;
   overflow: auto;
+  width: 100%;
 }

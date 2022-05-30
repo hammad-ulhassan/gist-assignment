@@ -1,38 +1,57 @@
 import React from "react";
-import { Card } from "antd";
 import { getGist } from "../../data/gists";
+import { GistContainer} from "./styles";
+import { RouterComponent } from "../RouterComponent/RouterComponent";
 import CodeView from "../CodeView/CodeView";
+import GistMetadata from "../GistMetadata/GistMetadata";
 
-export default class GistPreview extends React.Component {
+
+class GistPreview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: "",
+      filename: null,
+      content: null,
+      language: null,
+      loaded: false,
     };
+    this.navigateToGist = this.navigateToGist.bind(this);
   }
   componentDidMount() {
     const { gist } = this.props;
+    const firstFile = gist?.files[Object.keys(gist.files)[0]];
     getGist(gist)
       .then((gistData) => {
-        const content = gistData.files[Object.keys(gistData.files)[0]].content;
-        this.setState({content: content})
+        this.setState({
+          file: firstFile,
+          content: gistData.files[Object.keys(gistData.files)[0]].content,
+          language: gistData.files[Object.keys(gistData.files)[0]].language,
+          loaded: true,
+        });
       })
       .catch((err) => console.log(err));
   }
 
+  navigateToGist() {
+    const { gist } = this.props;
+    this.props.navigate("/gist", { state: gist });
+  }
+
   render() {
-      const {limit} = this.props;
+    const { gist } = this.props;
+
     return (
-      <Card
-        size="default"
-        style={{ minWidth: "100%", margin: "1%" }}
-        className="card-style"
-      >
-        {/* {Object.keys(gist.files).map((filename, index) => (
-          <Tag key={index}>{filename}</Tag>
-        ))} */}
-        <CodeView content={this.state.content} limit={limit}></CodeView>
-      </Card>
+      <GistContainer>
+        <GistMetadata isInTable={false} gist={gist}/>
+        <CodeView
+          loaded={this.state.loaded}
+          content={this.state.content?.split("\n").slice(0, 10).join("\n")}
+          navigateToGist={this.navigateToGist}
+          language={this.state.language}
+        />
+      </GistContainer>
     );
   }
 }
+
+export default RouterComponent(GistPreview);

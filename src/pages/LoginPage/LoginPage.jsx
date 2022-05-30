@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { HomePageLayout, CFSWrapper } from "../../shared/styles";
 import { Form, Input, Button } from "antd";
-import { RouterComponent } from "../RouterComponent/RouterComponent";
+import { RouterComponent } from "../../components/RouterComponent/RouterComponent";
+import { logMeIn, fetchAuthUserData } from "../../redux/credentialSlice";
+import { connect } from "react-redux";
+import { fetchMyGists } from "../../redux/userSlice";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -9,9 +12,12 @@ class LoginPage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(accessTokenValue) {
-    this.props.handleSubmit(accessTokenValue);
-    this.props.navigate("/user");
+  handleSubmit(values) {
+    // this.props.handleSubmit(accessTokenValue);
+    this.props.logMeIn(values.token, values.username);
+    this.props.fetchAuthUserData();
+    this.props.fetchAuthUserGists();
+    this.props.navigate("/home");
   }
 
   render() {
@@ -49,7 +55,7 @@ class LoginPage extends Component {
                   required: true,
                   message: "Please input your Github Username!",
                 },
-                ({ getFieldValue }) => ({
+                () => ({
                   validator(_, value) {
                     if (!value || value === "hammad-ulhassan") {
                       return Promise.resolve();
@@ -76,4 +82,22 @@ class LoginPage extends Component {
   }
 }
 
-export default RouterComponent(LoginPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logMeIn: (token, username) => {
+      dispatch(logMeIn(token, username));
+    },
+    fetchAuthUserData: () => {
+      dispatch(fetchAuthUserData())
+    },
+    fetchAuthUserGists:()=>{
+      dispatch(fetchMyGists())
+    }
+  };
+};
+
+export default RouterComponent(connect(null, mapDispatchToProps)(LoginPage));
+
+// export default RouterComponent(LoginPage);
+
+// export default compose(RouterComponent, connect(mapDispatchToProps))(LoginPage);

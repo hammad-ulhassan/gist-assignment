@@ -2,9 +2,11 @@ import React from "react";
 import { Button, Table, Tag } from "antd";
 import { StarOutlined, ForkOutlined } from "@ant-design/icons";
 import "./DataTable.css";
-import UserData from "../UserData/UserData";
-import { CSAWrapper, OYAWrapper } from "../../shared/styles";
+import { CSAWrapper } from "../../shared/styles";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
+import GistMetadata from "../GistMetadata/GistMetadata";
+import { connect } from "react-redux";
+import { selectedGist, fetchSelectedGistData } from "../../redux/gistSlice";
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class DataTable extends React.Component {
         key: "name",
         width: "20%",
         render: (text, record, index) => (
-          <UserData isInTable={true} record={record} />
+          <GistMetadata isInTable={true} gist={record.gist} />
         ),
       },
       {
@@ -37,20 +39,17 @@ class DataTable extends React.Component {
         dataIndex: "keyword",
         key: "keyword",
         width: "16%",
-        render: (text, record, index) => (text && text.slice(0, 25) + "..."),
+        render: (text, record, index) => text && text.slice(0, 25) + "...",
       },
       {
         title: "Notebook Name",
         dataIndex: "notebook",
         key: "notebook",
         width: "32%",
-        render: (text, record, index) => (
-          <OYAWrapper>
-            {record.notebook.map((file, index) =>
-              index < 5 ? <Tag key={index}>{file}</Tag> : null
-            )}
-          </OYAWrapper>
-        ),
+        render: (text, record, index) =>
+          record.notebook.map((file, index) =>
+            index < 5 ? <Tag key={index}>{file}</Tag> : null
+          ),
       },
       {
         title: "",
@@ -82,11 +81,11 @@ class DataTable extends React.Component {
   };
 
   onPaginationChange(currentPageNumber) {
-    console.log(currentPageNumber)
+    console.log(currentPageNumber);
     this.props.onPaginationChange(currentPageNumber);
   }
 
-  onNavigated(record){
+  onNavigated(record) {
     this.props.onNavigated(record);
   }
 
@@ -98,27 +97,44 @@ class DataTable extends React.Component {
     };
     return (
       <>
-      <Table
-        columns={this.columns}
-        rowSelection={rowSelection}
-        dataSource={dataSource}
-        scroll={{ y: 600 }}
-        loading={loading}
-        pageSize
-        pagination={{
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          total: 1000,
-          onChange: this.onPaginationChange,
-        }}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => this.props.navigate('/gist', {state: record})
-          };
-        }}
-      /></>
+        <Table
+          columns={this.columns}
+          rowSelection={rowSelection}
+          dataSource={dataSource}
+          scroll={{ y: 600 }}
+          loading={loading}
+          pageSize
+          pagination={{
+            defaultPageSize: 10,
+            showSizeChanger: true,
+            total: 1000,
+            onChange: this.onPaginationChange,
+          }}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) =>
+                {
+                  this.props.setSelectedGist(record);
+                  this.props.fetchSelectedGistAllData();
+                  this.props.navigate("/gist");
+                }
+            };
+          }}
+        />
+      </>
     );
   }
 }
 
-export default RouterComponent(DataTable)
+function mapDispatchToProps(dispatch){
+  return {
+    setSelectedGist: ({gist}) => {
+      dispatch(selectedGist(gist));
+    },
+    fetchSelectedGistAllData: () =>{
+      dispatch(fetchSelectedGistData())
+    }
+  };
+}
+
+export default RouterComponent(connect(null, mapDispatchToProps)(DataTable));
