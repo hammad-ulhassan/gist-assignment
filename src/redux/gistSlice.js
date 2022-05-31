@@ -78,7 +78,7 @@ export const selectAllDataStatus = (state) => state.gists.gistAllDataStatus;
 
 export const selectGistDeleteStatus = (state) => state.gists.deleteGistStatus;
 
-export const selectGistCreatedStatus = (state) => state.gist.createGistStatus;
+export const selectGistCreatedStatus = (state) => state.gists.createGistStatus;
 
 export const { selectedGist } = gistSlice.actions;
 

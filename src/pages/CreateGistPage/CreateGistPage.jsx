@@ -5,6 +5,7 @@ import GistForm from "../../components/GistForm/GistForm";
 import { RouterComponent } from "../../components/RouterComponent/RouterComponent";
 import { createGist, selectGistCreatedStatus } from "../../redux/gistSlice";
 import { connect } from "react-redux";
+import { fetchMyGists } from "../../redux/userSlice";
 
 class CreateGistPage extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class CreateGistPage extends React.Component {
     //     message: "Gist Created",
     //   })
     // );
+    this.props.fetchAuthUserGists();
     this.props.navigate("/me");
   }
 
@@ -82,6 +84,9 @@ const mapDispatchToProps = (dispatch) => {
     createGist: (gistPostData) => {
       dispatch(createGist(gistPostData));
     },
+    fetchAuthUserGists:()=>{
+      dispatch(fetchMyGists())
+    }
   };
 };
 

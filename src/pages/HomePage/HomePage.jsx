@@ -3,15 +3,15 @@ import {
   CFEWrapper,
   HomePageLayout,
   CardsLayout,
-  UserCard,
   CardViewLayout,
 } from "../../shared/styles";
-import { Card, Pagination } from "antd";
+import { Pagination } from "antd";
 import BtnGrp from "../../components/BtnGrp/BtnGrp";
 import GistPreview from "../../components/GistPreview/GistPreview";
 import DataTable from "../../components/DataTable/DataTable";
 import { fetchPublicGists, selectAllGists, selectGistsError, selectGistsStatus } from "../../redux/gistSlice";
 import { connect } from "react-redux";
+import {Card} from './styles';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -70,8 +70,8 @@ class HomePage extends React.Component {
                   // <UserCard style={{ width: "40%" }}>
                   //   <GistPreview gist={gist.gist} key={index} />
                   // </UserCard>
-                  <Card style={{"maxWidth":"100%", "width":"100%", "maxHeight":"100%", "height":"100%", "overflow":"hidden", "padding":"0"}}>
-                    <GistPreview gist={gist.gist} key={index} />
+                  <Card>
+                    <GistPreview gist={gist.gist} key={index} splitter={4}/>
                   </Card>
                 ))}
               </CardsLayout>

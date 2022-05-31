@@ -17,6 +17,7 @@ import {
   selectGistDeleteStatus,
 } from "../../redux/gistSlice";
 import { connect } from "react-redux";
+import { fetchMyGists } from "../../redux/userSlice";
 
 class GistsPage extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class GistsPage extends React.Component {
     // });
     this.props.deleteGist();
     if(this.props.gistDeleteStatus==='succeeded'){
+      this.props.fetchAuthUserGists();
       this.props.navigate("/home");
     }
   }
@@ -149,6 +151,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteGist: ()=>{
       dispatch(deleteGist())
+    },
+    fetchAuthUserGists:()=>{
+      dispatch(fetchMyGists())
     }
   }
 }

@@ -46,14 +46,13 @@ class GistPreview extends React.Component {
   }
 
   render() {
-    const { gist } = this.props;
-
+    const { gist, splitter } = this.props;
     return (
       <GistContainer>
         <GistMetadata isInTable={false} gist={gist}/>
         <CodeView
           loaded={this.state.loaded}
-          content={this.state.content?.split("\n").slice(0, 10).join("\n")}
+          content={this.state.content?.split("\n").slice(0, (splitter||10)).join("\n")}
           navigateToGist={this.navigateToGist}
           language={this.state.language}
         />

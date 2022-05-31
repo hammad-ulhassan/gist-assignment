@@ -19,14 +19,14 @@ class GistMetadata extends Component {
 
   userNavigate(){
     const { gist } = this.props;
-    this.props.setSelectedGist({gist});
+    this.props.setSelectedGist(gist);
     this.props.navigate(`/user/${gist?.owner?.login}`);
   }
 
   gistNavigate(){
-    const { gist } = this.props;
-
-    this.props.navigate(`/gist/${gist?.id}`)
+    // const { gist } = this.props;
+    // this.props.setSelectedGist(gist);
+    // this.props.navigate(`/gist/${gist?.id}`)
   }
 
 
@@ -43,7 +43,7 @@ class GistMetadata extends Component {
                 {`@${gist?.owner?.login}/`}
               </StyledAnchor>
               <PaddedAnchor onClick={this.gistNavigate}>
-                {gist?.files[Object.keys(gist.files)[0]].filename}
+                {gist?.files[Object.keys(gist.files)[0]]?.filename}
               </PaddedAnchor>
             </span>
             <Text type="secondary">{moment(gist?.created_at).fromNow()}</Text>
@@ -61,7 +61,7 @@ class GistMetadata extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setSelectedGist: ({ gist }) => {
+    setSelectedGist: (gist) => {
       dispatch(selectedGist(gist));
     },
     fetchSelectedGistAllData: () => {

@@ -1,0 +1,1 @@
+export const selectSearchResults = (state) => state.searches.searchResults;
