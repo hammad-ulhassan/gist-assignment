@@ -194,4 +194,5 @@ export const CardViewLayout = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  border: 1px red solid;
 `;

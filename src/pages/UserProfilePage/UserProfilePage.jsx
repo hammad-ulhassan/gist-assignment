@@ -38,8 +38,7 @@ class UserProfilePage extends React.Component {
   }
 
   render() {
-    const { selectedUserData, selectUserGistsStatus, selectUserGists } =
-      this.props;
+    const { selectedUserData, selectUserGistsStatus, selectUserGists } = this.props;
 
     return (
       <HomePageLayout>

@@ -5,6 +5,8 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 import { GistDetails, StyledAnchor, PaddedAnchor } from "../../shared/styles";
 import moment from "moment";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
+import { fetchSelectedGistData, selectedGist } from "../../redux/gistSlice";
+import { connect } from "react-redux";
 
 const { Text } = Typography;
 
@@ -17,8 +19,8 @@ class GistMetadata extends Component {
 
   userNavigate(){
     const { gist } = this.props;
-
-    this.props.navigate(`/user/${gist?.owner?.login}`)
+    this.props.setSelectedGist({gist});
+    this.props.navigate(`/user/${gist?.owner?.login}`);
   }
 
   gistNavigate(){
@@ -57,4 +59,17 @@ class GistMetadata extends Component {
   }
 }
 
-export default RouterComponent(GistMetadata)
+function mapDispatchToProps(dispatch) {
+  return {
+    setSelectedGist: ({ gist }) => {
+      dispatch(selectedGist(gist));
+    },
+    fetchSelectedGistAllData: () => {
+      dispatch(fetchSelectedGistData());
+    },
+  };
+}
+
+export default RouterComponent(
+  connect(null, mapDispatchToProps)(GistMetadata)
+)
