@@ -1,7 +1,7 @@
 import React from "react";
 import { forkGist, starGist } from "../../data/gists";
 import { CSBWrapper, HomePageLayout, ColFSWrapper } from "../../shared/styles";
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
 import { RouterComponent } from "../../components/RouterComponent/RouterComponent";
 import GistUtils from "../../components/GistUtils/GistUtils";
 import GistMetadata from "../../components/GistMetadata/GistMetadata";
@@ -47,7 +47,9 @@ class GistsPage extends React.Component {
   forkGist() {
     forkGist(this.props.selectedGistAllData?.id).then((res) => {
       if (res.status === 201) {
-        // this.getGistSetState(this.state.gist);
+        notification.open({
+          message: "Gist Forked",
+        });
       }
     });
   }
@@ -55,7 +57,9 @@ class GistsPage extends React.Component {
   starGist() {
     starGist(this.props.selectedGistAllData?.id).then((res) => {
       if (res.status === 204) {
-        // this.getGistSetState(this.state.gist);
+        notification.open({
+          message: "Gist Starred",
+        });
       }
     });
   }
@@ -91,6 +95,7 @@ class GistsPage extends React.Component {
             <GistUtils
               forks={this.props.selectedGistAllData?.forks}
               showPersonalControls={showPersonalControls}
+              isLoggedIn={this.props.isLoggedIn}
               handleGistEdit={this.editGist}
               handleGistDelete={this.deleteGist}
               handleForkGist={this.forkGist}

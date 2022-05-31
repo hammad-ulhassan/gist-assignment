@@ -73,7 +73,7 @@ export const HomePageLayout = styled.div`
   display: grid;
   width: 100%;
   height: 100%;
-
+  padding-bottom: 2%;
   grid-template-rows: 10vh auto;
 
   //background-color: black;
@@ -93,9 +93,11 @@ export const UserProfileWrapper = styled.section`
 export const CardsLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 2%;
+  gap: 1%;
   margin: 0;
   padding: 0;
+  max-height: 80vh;
+  overflow: auto;
 `;
 
 export const UserCard = styled(AntCard)`
@@ -185,4 +187,11 @@ export const StyledAnchor = styled.a`
 
 export const PaddedAnchor = styled.a`
   padding-left: 0.5%;
+`;
+
+export const CardViewLayout = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 `;

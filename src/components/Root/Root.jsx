@@ -75,7 +75,7 @@ class Root extends React.Component {
           <Route path="edit/:id" element={<EditGistPage />} />
           <Route path="user/:login" element={<UserProfilePage />} />
           <Route path="me" element={<MyProfilePage />} />
-          <Route path="search" element={<SearchPage />} />
+          <Route path="search/:param" element={<SearchPage />} />
         </Route>
       </Routes>
     );

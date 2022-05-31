@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table, Tag } from "antd";
+import { Button, notification, Table, Tag } from "antd";
 import { StarOutlined, ForkOutlined } from "@ant-design/icons";
 import "./DataTable.css";
 import { CSAWrapper } from "../../shared/styles";
@@ -7,12 +7,56 @@ import { RouterComponent } from "../RouterComponent/RouterComponent";
 import GistMetadata from "../GistMetadata/GistMetadata";
 import { connect } from "react-redux";
 import { selectedGist, fetchSelectedGistData } from "../../redux/gistSlice";
+import { selectIsLoggedIn } from "../../redux/credentialSlice";
+import { forkGist, starGist } from "../../data/gists";
 
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.onSelectChange = this.onSelectChange.bind(this);
-    this.columns = [
+    this.starGist = this.starGist.bind(this);
+    this.forkGist = this.forkGist.bind(this);
+    this.state = {
+      loggedIn: false,
+    };
+    this.onPaginationChange = this.onPaginationChange.bind(this);
+  }
+
+  onSelectChange = (selectedRowKeys) => {
+    this.props.handleOnSelectChange({ selectedRowKeys });
+  };
+
+  onPaginationChange(currentPageNumber) {
+    this.props.onPaginationChange(currentPageNumber);
+  }
+
+  forkGist(gistId) {
+    forkGist(gistId).then((res) => {
+      if (res.status === 201) {
+        notification.open({
+          message: "Gist Starred",
+        });
+      }
+    });
+  }
+
+  starGist(gistId) {
+    starGist(gistId).then((res) => {
+      if (res.status === 204) {
+        notification.open({
+          message: "Gist Starred",
+        });
+      }
+    });
+  }
+
+  render() {
+    const { loading, selectedRowKeys, dataSource } = this.props;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
+    const columns = [
       {
         title: "Name",
         dataIndex: "name",
@@ -56,49 +100,39 @@ class DataTable extends React.Component {
         dataIndex: "actions",
         key: "actions",
         width: "8%",
-        render: (text, record, index) => (
-          <CSAWrapper gap={3}>
-            <Button
-              type="text"
-              icon={<StarOutlined />}
-              onClick={(e) => {
-                console.log("star pressed");
-                e.stopPropagation();
-              }}
-            />
-            <Button type="text" icon={<ForkOutlined />} />
-          </CSAWrapper>
-        ),
+        render: (text, record, index) => {
+          return this.state.loggedIn ? (
+            <CSAWrapper gap={3}>
+              <Button
+                type="text"
+                icon={<StarOutlined />}
+                onClick={(e) => {
+                  this.starGist(record.gist.id);
+                  e.stopPropagation();
+                }}
+              />
+              <Button
+                type="text"
+                icon={<ForkOutlined />}
+                onClick={(e) => {
+                  this.forkGist(record.gist.id);
+                  e.stopPropagation();
+                }}
+              />
+            </CSAWrapper>
+          ) : null;
+        },
       },
     ];
-    this.onPaginationChange = this.onPaginationChange.bind(this);
-  }
-
-  onSelectChange = (selectedRowKeys) => {
-    console.log(selectedRowKeys);
-    this.props.handleOnSelectChange({ selectedRowKeys });
-  };
-
-  onPaginationChange(currentPageNumber) {
-    console.log(currentPageNumber);
-    this.props.onPaginationChange(currentPageNumber);
-  }
-
-  render() {
-    const { loading, selectedRowKeys, dataSource } = this.props;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
     return (
       <>
         <Table
-          columns={this.columns}
+          columns={columns}
           rowSelection={rowSelection}
           dataSource={dataSource}
           scroll={{ y: 600 }}
           loading={loading}
-          pageSize
+          pageSize={10}
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,
@@ -107,29 +141,42 @@ class DataTable extends React.Component {
           }}
           onRow={(record, rowIndex) => {
             return {
-              onClick: (event) =>
-                {
-                  this.props.setSelectedGist(record);
-                  this.props.fetchSelectedGistAllData();
-                  this.props.navigate(`/gist/${record.gist.id}`);
-                }
+              onClick: (event) => {
+                this.props.setSelectedGist(record);
+                this.props.fetchSelectedGistAllData();
+                this.props.navigate(`/gist/${record.gist.id}`);
+              },
             };
           }}
         />
       </>
     );
   }
+
+  componentDidUpdate(previousProps, previousState) {
+    if(previousState.loggedIn !== this.props.isLoggedIn){
+      this.setState({loggedIn: this.props.isLoggedIn})
+    }
+  }
 }
 
-function mapDispatchToProps(dispatch){
+const mapStateToProps = (state) => {
   return {
-    setSelectedGist: ({gist}) => {
+    isLoggedIn: selectIsLoggedIn(state),
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setSelectedGist: ({ gist }) => {
       dispatch(selectedGist(gist));
     },
-    fetchSelectedGistAllData: () =>{
-      dispatch(fetchSelectedGistData())
-    }
+    fetchSelectedGistAllData: () => {
+      dispatch(fetchSelectedGistData());
+    },
   };
 }
 
-export default RouterComponent(connect(null, mapDispatchToProps)(DataTable));
+export default RouterComponent(
+  connect(mapStateToProps, mapDispatchToProps)(DataTable)
+);

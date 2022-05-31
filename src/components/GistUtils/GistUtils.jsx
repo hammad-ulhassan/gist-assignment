@@ -9,7 +9,7 @@ import {
 import { Button } from "antd";
 
 export default class GistUtils extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.handleGistEdit = this.handleGistEdit.bind(this);
     this.handleGistDelete = this.handleGistDelete.bind(this);
@@ -17,53 +17,72 @@ export default class GistUtils extends React.Component {
     this.handleGistStar = this.handleGistStar.bind(this);
   }
 
-  handleGistEdit(){
-    this.props.handleGistEdit()
+  handleGistEdit() {
+    this.props.handleGistEdit();
   }
 
-  handleGistDelete(){
-    this.props.handleGistDelete()
+  handleGistDelete() {
+    this.props.handleGistDelete();
   }
 
-  handleForkGist(){
+  handleForkGist() {
     this.props.handleForkGist();
   }
 
-  handleGistStar(){
+  handleGistStar() {
     this.props.handleGistStar();
   }
 
-
   render() {
-    const { forks, showPersonalControls } = this.props;
+    const { forks, showPersonalControls, isLoggedIn } = this.props;
     return (
       <CSBWrapper>
-        {showPersonalControls?
+        {showPersonalControls ? (
           <>
             <CSBWrapper>
-              <Button type="link" icon={<EditOutlined />} onClick={this.handleGistEdit}>
+              <Button
+                type="link"
+                icon={<EditOutlined />}
+                onClick={this.handleGistEdit}
+              >
                 Edit
               </Button>
             </CSBWrapper>
             <CSBWrapper>
-              <Button type="link" icon={<DeleteOutlined />} onClick={this.handleGistDelete}>
+              <Button
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={this.handleGistDelete}
+              >
                 Delete
               </Button>
             </CSBWrapper>
-          </>:null
-        }
-        <CSBWrapper>
-          <Button type="link" icon={<StarOutlined />} onClick={this.handleGistStar}>
-            Star
-          </Button>
-          <NumberDisplay>0</NumberDisplay>
-        </CSBWrapper>
-        <CSBWrapper>
-          <Button type="link" icon={<ForkOutlined />} onClick={this.handleForkGist}>
-            Fork
-          </Button>
-          <NumberDisplay>{forks.length}</NumberDisplay>
-        </CSBWrapper>
+          </>
+        ) : null}
+        {isLoggedIn ? (
+          <>
+            <CSBWrapper>
+              <Button
+                type="link"
+                icon={<StarOutlined />}
+                onClick={this.handleGistStar}
+              >
+                Star
+              </Button>
+              <NumberDisplay>0</NumberDisplay>
+            </CSBWrapper>
+            <CSBWrapper>
+              <Button
+                type="link"
+                icon={<ForkOutlined />}
+                onClick={this.handleForkGist}
+              >
+                Fork
+              </Button>
+              <NumberDisplay>{forks.length}</NumberDisplay>
+            </CSBWrapper>
+          </>
+        ) : null}
       </CSBWrapper>
     );
   }

@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loadState } from "../localStorage";
 
 const initialState = {
-  token: "",
-  username: "",
+  token: null,
+  username: null,
   loggedIn: false,
-  loginTime: "",
+  loginTime: null,
   status:"idle", //'idle' | 'loading' | 'succeeded' | 'failed',
   error: null,
   authUserData: null
@@ -32,6 +32,15 @@ export const loginSlice = createSlice({
         };
       },
     },
+    logMeOut: {
+      reducer(state, action){
+        state.token = null;
+        state.username = null;
+        state.loggedIn = false;
+        state.state="idle";
+        state.authUserData = null;
+      }
+    }
   },
   extraReducers(builder) {
     builder
@@ -49,7 +58,7 @@ export const loginSlice = createSlice({
   }
 });
 
-export const { logMeIn } = loginSlice.actions;
+export const { logMeIn, logMeOut } = loginSlice.actions;
 
 export default loginSlice.reducer;
 

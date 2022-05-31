@@ -4,6 +4,7 @@ import {
   HomePageLayout,
   CardsLayout,
   UserCard,
+  CardViewLayout,
 } from "../../shared/styles";
 import { Pagination } from "antd";
 import BtnGrp from "../../components/BtnGrp/BtnGrp";
@@ -47,13 +48,6 @@ class HomePage extends React.Component {
     console.log(page);
   }
 
-  getGistsData(){
-    if(this.props.status==='succeeded' && this.props.error===null){
-      return this.props.gists
-    }
-    return []
-  }
-
   render() {
     return (
       <HomePageLayout>
@@ -65,14 +59,14 @@ class HomePage extends React.Component {
             <DataTable
               handleOnSelectChange={this.handleOnSelectChange}
               onPaginationChange={this.handleOnPaginationChange}
-              dataSource={this.getGistsData()}
+              dataSource={this.props.gists}
               loading={this.props.error || this.props.status!=='succeeded'}
               selectedRowKeys={this.state.selectedRowKeys}
             />
           ) : (
-            <>
+            <CardViewLayout>
               <CardsLayout>
-                {this.state.tableData.map((gist, index) => (
+                {this.props.gists.map((gist, index) => (
                   <UserCard style={{ maxWidth: "27rem" }}>
                     <GistPreview gist={gist.gist} key={index} />
                   </UserCard>
@@ -83,7 +77,7 @@ class HomePage extends React.Component {
                 total={50}
                 onChange={this.onCardsPaginationChange}
               />
-            </>
+            </CardViewLayout>
           )}
         </div>
       </HomePageLayout>

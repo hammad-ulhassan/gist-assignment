@@ -13,7 +13,7 @@ import { Dropdown, Button, Menu } from "antd";
 import { Link } from "react-router-dom";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import { connect } from "react-redux";
-import { selectAuthUserData, selectIsLoggedIn } from "../../redux/credentialSlice";
+import { logMeOut, selectAuthUserData, selectIsLoggedIn } from "../../redux/credentialSlice";
 import { searchGists } from "../../redux/searchSlice";
 
 const ourMenu = (items) => <Menu items={[...items]} />;
@@ -32,14 +32,15 @@ class Header extends React.Component {
   }
 
   handleLogoutButton(){
-    this.props.handleLogout()
+    // this.props.handleLogout()
+    this.props.logMeOut();
   }
 
-  handleSearch(e){
+  handleSearch(value){
     // console.log(e)
     // this.props.handleSearch(e.target.value)
-    this.props.searchGists(e.target.value);
-    this.props.navigate("/search")
+    this.props.searchGists(value);
+    this.props.navigate(`/search/${value}`)
   }
 
   render() {
@@ -123,6 +124,9 @@ const mapDispatchToProps = (dispatch) => {
     searchGists: (searchInput) => {
       dispatch(searchGists(searchInput));
     },
+    logMeOut: ()=>{
+      dispatch(logMeOut());
+    }
   };
 }
 

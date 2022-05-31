@@ -59,7 +59,11 @@ export const gistSlice = createSlice({
       .addCase(createGist.fulfilled, (state, action) => {
         state.createGistStatus = "succeeded";
         state.createGistResponse = action.payload;
-      });
+      })
+      .addCase(starGist.fulfilled, (state, action) => {
+        state.createGistStatus = "succeeded";
+        state.createGistResponse = action.payload;
+      })
   },
 });
 
@@ -137,6 +141,30 @@ export const deleteGist = createAsyncThunk(
     const res = await fetch(
       `https://api.github.com/gists/${selectSelectedGist(getState())?.id}`,
       { method: "delete", headers: myHeaders }
+    );
+    const response = await res.json();
+    return response;
+  }
+);
+
+export const starGist = createAsyncThunk(
+  "gist/starGist",
+  async (gistId, { getState }) => {
+    const res = await fetch(
+      ` https://api.github.com/gists/${gistId}/star`,
+      { method: "put", headers: myHeaders }
+    );
+    const response = await res.json();
+    return response;
+  }
+);
+
+export const forkGist = createAsyncThunk(
+  "gist/starGist",
+  async (gistId, { getState }) => {
+    const res = await fetch(
+      ` https://api.github.com/gists/${gistId}/star`,
+      { method: "put", headers: myHeaders }
     );
     const response = await res.json();
     return response;
