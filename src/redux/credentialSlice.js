@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { loadState } from "../localStorage";
 
 const initialState = {
   token: "",
@@ -12,7 +13,7 @@ const initialState = {
 
 export const loginSlice = createSlice({
   name: "login",
-  initialState,
+  initialState: loadState().logins || initialState,
   reducers: {
     logMeIn: {
       reducer(state, action) {

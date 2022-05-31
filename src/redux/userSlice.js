@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { selectUsername } from "./credentialSlice";
 import { selectSelectedGist } from "./gistSlice";
 import headers from '../credentials';
+import { loadState } from "../localStorage";
+
+const myHeaders = new Headers(headers)
 
 
 const initialState = {
@@ -17,7 +20,7 @@ const initialState = {
 
 export const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: loadState().users || initialState,
   reducers: {
   },
   extraReducers(builder) {
@@ -70,7 +73,7 @@ export const fetchUserData = createAsyncThunk(
   async (_, { getState }) => {
     const res = await fetch(selectSelectedGist(getState())?.owner?.url, {
       method: "get",
-      headers,
+      headers: myHeaders,
     });
     const response = await res.json();
     return response;
@@ -82,7 +85,7 @@ export const fetchUserGists = createAsyncThunk(
     async (_, { getState }) => {
       const res = await fetch(` https://api.github.com/users/${selectSelectedGist(getState())?.owner?.login}/gists`, {
         method: "get",
-        headers,
+        headers: myHeaders,
       });
       const response = await res.json();
       return response;
@@ -95,7 +98,7 @@ export const fetchMyGists = createAsyncThunk(
         console.log('here')
       const res = await fetch(` https://api.github.com/users/${selectUsername(getState())}/gists`, {
         method: "get",
-        headers,
+        headers: myHeaders,
       });
       const response = await res.json();
       return response;

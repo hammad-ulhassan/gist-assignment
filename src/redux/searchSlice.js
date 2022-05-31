@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import moment from "moment";
 import headers from '../credentials';
+import { loadState } from "../localStorage";
+
+const myHeaders = new Headers(headers)
 
 
 const initialState = {
@@ -10,7 +13,7 @@ const initialState = {
 
 export const searchSlice = createSlice({
   name: "search",
-  initialState,
+  initialState: loadState().searches || initialState,
   reducers: {
     registerSearch: (state, action) => {
       state.searchInput += action.payload;
@@ -36,7 +39,7 @@ export const searchGists = createAsyncThunk(
   async (username, { getState }) => {
     const res = await fetch(`https://api.github.com/users/${username}/gists`, {
       method: "get",
-      headers,
+      headers: myHeaders,
     });
     const response = await res.json();
     const resp = await response.map((gist) => {

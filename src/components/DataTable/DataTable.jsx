@@ -72,7 +72,6 @@ class DataTable extends React.Component {
       },
     ];
     this.onPaginationChange = this.onPaginationChange.bind(this);
-    this.onNavigated = this.onNavigated.bind(this);
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -83,10 +82,6 @@ class DataTable extends React.Component {
   onPaginationChange(currentPageNumber) {
     console.log(currentPageNumber);
     this.props.onPaginationChange(currentPageNumber);
-  }
-
-  onNavigated(record) {
-    this.props.onNavigated(record);
   }
 
   render() {
@@ -116,7 +111,7 @@ class DataTable extends React.Component {
                 {
                   this.props.setSelectedGist(record);
                   this.props.fetchSelectedGistAllData();
-                  this.props.navigate("/gist");
+                  this.props.navigate(`/gist/${record.gist.id}`);
                 }
             };
           }}

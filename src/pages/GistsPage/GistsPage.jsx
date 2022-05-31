@@ -29,7 +29,7 @@ class GistsPage extends React.Component {
   }
 
   editGist() {
-    this.props.navigate("/edit");
+    this.props.navigate(`/edit/${this.props.selectedGistAllData.id}`);
   }
 
   deleteGist() {
@@ -58,6 +58,10 @@ class GistsPage extends React.Component {
         // this.getGistSetState(this.state.gist);
       }
     });
+  }
+
+  componentDidMount(){
+    // console.log(this.props.params)
   }
 
   render() {

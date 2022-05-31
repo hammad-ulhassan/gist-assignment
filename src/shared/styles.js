@@ -178,3 +178,11 @@ export const SearchBox = styled(antInput)`
     color: var(--white);
   }
 `;
+
+export const StyledAnchor = styled.a`
+  font-weight: bold;
+`;
+
+export const PaddedAnchor = styled.a`
+  padding-left: 0.5%;
+`;

@@ -65,15 +65,15 @@ class Root extends React.Component {
             path="home"
             element={<HomePage searchParam={this.state.searchParam} />}
           />
-          <Route path="gist" element={<GistsPage />} />
+          <Route path="gist/:id" element={<GistsPage />} />
           <Route
             path="login"
             // element={<LoginPage handleSubmit={this.onLogin} />}
             element={<LoginPage/>}
           />
           <Route path="create" element={<CreateGistPage />} />
-          <Route path="edit" element={<EditGistPage />} />
-          <Route path="user" element={<UserProfilePage />} />
+          <Route path="edit/:id" element={<EditGistPage />} />
+          <Route path="user/:login" element={<UserProfilePage />} />
           <Route path="me" element={<MyProfilePage />} />
           <Route path="search" element={<SearchPage />} />
         </Route>

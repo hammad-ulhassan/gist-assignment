@@ -1,32 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import moment from "moment";
+import headers from "../credentials";
+import { loadState } from "../localStorage";
 
-
-import headers from '../credentials';
-
+const myHeaders = new Headers(headers);
 
 const initialState = {
   gists: [],
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
-  selectedGist:{},
-  selectedGistAllData:null,
+  selectedGist: {},
+  selectedGistAllData: null,
   gistAllDataStatus: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   editGistStatus: "idle",
   editGistResponse: null,
   deleteGistStatus: "idle",
   deleteGistResponse: null,
-  createGistStatus:"idle",
-  createGistResponse:null,
+  createGistStatus: "idle",
+  createGistResponse: null,
 };
 
 export const gistSlice = createSlice({
   name: "gist",
-  initialState,
+  initialState: loadState().gists || initialState,
   reducers: {
-    selectedGist(state, action){
+    selectedGist(state, action) {
       state.selectedGist = action.payload;
-    }
+    },
   },
   extraReducers(builder) {
     builder
@@ -35,7 +35,7 @@ export const gistSlice = createSlice({
       })
       .addCase(fetchPublicGists.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.gists=action.payload;
+        state.gists = action.payload;
       })
       .addCase(fetchPublicGists.rejected, (state, action) => {
         state.status = "failed";
@@ -74,19 +74,17 @@ export const selectAllDataStatus = (state) => state.gists.gistAllDataStatus;
 
 export const selectGistDeleteStatus = (state) => state.gists.deleteGistStatus;
 
-export const selectGistCreatedStatus  = (state) => state.gist.createGistStatus;
+export const selectGistCreatedStatus = (state) => state.gist.createGistStatus;
 
-export const {selectedGist}  = gistSlice.actions;
-
+export const { selectedGist } = gistSlice.actions;
 
 export const fetchPublicGists = createAsyncThunk(
   "gist/fetchPublicGists",
   async ({ per_page, page }) => {
-    console.log({headers})
     const res = await fetch(
       "https://api.github.com/gists/public?" +
         new URLSearchParams({ per_page: per_page, page: page }),
-      { method: "get", headers }
+      { method: "get" , headers: myHeaders}
     );
     const response = await res.json();
     const resp = await response.map((gist) => {
@@ -105,11 +103,13 @@ export const fetchPublicGists = createAsyncThunk(
 
 export const fetchSelectedGistData = createAsyncThunk(
   "gist/fetchSelectedGistData",
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const res = await fetch(
-      selectSelectedGist(getState())?.url,
-      { method: "get", headers }
-    );
+      `https://api.github.com/gists/${selectSelectedGist(getState())?.id}`, 
+    {
+      method: "get",
+      headers: myHeaders,
+    });
     const response = await res.json();
     return response;
   }
@@ -117,43 +117,41 @@ export const fetchSelectedGistData = createAsyncThunk(
 
 export const editGist = createAsyncThunk(
   "gist/editGist",
-  async (postData, {getState})=>{
+  async (postData, { getState }) => {
     const res = await fetch(
       `https://api.github.com/gists/${selectSelectedGist(getState())?.id}`,
-      { method: "patch", headers, body: JSON.stringify(postData) }
+      { method: "patch", headers: myHeaders, body: JSON.stringify(postData) }
     );
     const response = await res.json();
     return response;
   }
-)
+);
 
 //conditional dispatch
 //delayed dispatch
 //synchronous thunk
 
-
 export const deleteGist = createAsyncThunk(
   "gist/deleteGist",
-  async (_, {getState})=>{
+  async (_, { getState }) => {
     const res = await fetch(
       `https://api.github.com/gists/${selectSelectedGist(getState())?.id}`,
-      { method: "delete", headers}
+      { method: "delete", headers: myHeaders }
     );
     const response = await res.json();
     return response;
   }
-)
+);
 
 export const createGist = createAsyncThunk(
   "gist/createGist",
-  async (postData, {getState})=>{
-    const res = await fetch(
-      `https://api.github.com/gists`,
-      { method: "post", headers, body: JSON.stringify(postData) }
-    );
+  async (postData, _) => {
+    const res = await fetch(`https://api.github.com/gists`, {
+      method: "post",
+      headers: myHeaders,
+      body: JSON.stringify(postData),
+    });
     const response = await res.json();
     return response;
   }
-)
-
-
+);

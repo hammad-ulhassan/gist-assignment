@@ -4,6 +4,8 @@ import { GistContainer} from "./styles";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
 import CodeView from "../CodeView/CodeView";
 import GistMetadata from "../GistMetadata/GistMetadata";
+import { fetchSelectedGistData, selectedGist } from "../../redux/gistSlice";
+import { connect } from "react-redux";
 
 
 class GistPreview extends React.Component {
@@ -34,7 +36,9 @@ class GistPreview extends React.Component {
 
   navigateToGist() {
     const { gist } = this.props;
-    this.props.navigate("/gist", { state: gist });
+    this.props.setSelectedGist({gist});
+    this.props.fetchSelectedGistAllData();
+    this.props.navigate(`/gist/${gist.id}`);
   }
 
   render() {
@@ -54,4 +58,14 @@ class GistPreview extends React.Component {
   }
 }
 
-export default RouterComponent(GistPreview);
+function mapDispatchToProps(dispatch){
+  return {
+    setSelectedGist: ({gist}) => {
+      dispatch(selectedGist(gist));
+    },
+    fetchSelectedGistAllData: () =>{
+      dispatch(fetchSelectedGistData())
+    }
+  };
+}
+export default RouterComponent(connect(null, mapDispatchToProps)(GistPreview));

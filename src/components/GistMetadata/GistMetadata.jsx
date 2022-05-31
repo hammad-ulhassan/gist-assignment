@@ -2,13 +2,32 @@ import React, { Component } from "react";
 import { Typography } from "antd";
 import { RowFS, ColC } from "./styles";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { GistDetails, StyledLink } from "../../shared/styles";
-import { Link } from "react-router-dom";
+import { GistDetails, StyledAnchor, PaddedAnchor } from "../../shared/styles";
 import moment from "moment";
+import { RouterComponent } from "../RouterComponent/RouterComponent";
 
 const { Text } = Typography;
 
-export default class GistMetadata extends Component {
+class GistMetadata extends Component {
+  constructor(props){
+    super(props);
+    this.userNavigate = this.userNavigate.bind(this);
+    this.gistNavigate = this.gistNavigate.bind(this);
+  }
+
+  userNavigate(){
+    const { gist } = this.props;
+
+    this.props.navigate(`/user/${gist?.owner?.login}`)
+  }
+
+  gistNavigate(){
+    const { gist } = this.props;
+
+    this.props.navigate(`/gist/${gist?.id}`)
+  }
+
+
   render() {
     const { isInTable, gist } = this.props;
     //extract fist filename to show at file name.
@@ -18,12 +37,12 @@ export default class GistMetadata extends Component {
         {!isInTable ? (
           <GistDetails>
             <span>
-              <StyledLink to="/user">
+              <StyledAnchor onClick={this.userNavigate}>
                 {`@${gist?.owner?.login}/`}
-              </StyledLink>{" "}
-              <Link to="/gist" state={gist}>
+              </StyledAnchor>
+              <PaddedAnchor onClick={this.gistNavigate}>
                 {gist?.files[Object.keys(gist.files)[0]].filename}
-              </Link>
+              </PaddedAnchor>
             </span>
             <Text type="secondary">{moment(gist?.created_at).fromNow()}</Text>
             <Text type="secondary">{gist?.description?.slice(0,20)}</Text>
@@ -37,3 +56,5 @@ export default class GistMetadata extends Component {
     );
   }
 }
+
+export default RouterComponent(GistMetadata)

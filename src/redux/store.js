@@ -5,12 +5,21 @@ import gistReducer from "./gistSlice";
 import userReducer from "./userSlice";
 
 import searchReducer from "./searchSlice";
+import { saveState } from "../localStorage";
+
 
 export const store = configureStore({
   reducer: {
     gists: gistReducer,
     logins: loginReducer,
     users: userReducer,
-    searches: searchReducer
+    searches: searchReducer,
   },
+
+
 });
+
+
+store.subscribe(()=>{
+  saveState(store.getState());
+})
