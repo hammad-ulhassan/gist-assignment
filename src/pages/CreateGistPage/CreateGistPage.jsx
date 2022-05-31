@@ -63,6 +63,11 @@ class CreateGistPage extends React.Component {
         message: "Gist Created",
       });
     }
+    else{
+      notification.open({
+        message: "Some Error Occured",
+      });
+    }
   }
 }
 

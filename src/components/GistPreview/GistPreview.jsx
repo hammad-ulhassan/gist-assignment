@@ -21,6 +21,10 @@ class GistPreview extends React.Component {
   }
   componentDidMount() {
     const { gist } = this.props;
+    this.fetchGistData(gist);
+  }
+
+  fetchGistData(gist){
     const firstFile = gist?.files[Object.keys(gist.files)[0]];
     getGist(gist)
       .then((gistData) => {
@@ -56,6 +60,14 @@ class GistPreview extends React.Component {
       </GistContainer>
     );
   }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.gist.id !== this.props.gist.id){
+      this.fetchGistData(this.props.gist)
+    }
+
+  }
+
 }
 
 function mapDispatchToProps(dispatch){

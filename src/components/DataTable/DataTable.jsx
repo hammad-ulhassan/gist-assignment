@@ -37,6 +37,11 @@ class DataTable extends React.Component {
           message: "Gist Starred",
         });
       }
+      else{
+        notification.open({
+          message: "Some Error Occured",
+        });
+      }
     });
   }
 
@@ -45,6 +50,11 @@ class DataTable extends React.Component {
       if (res.status === 204) {
         notification.open({
           message: "Gist Starred",
+        });
+      }
+      else{
+        notification.open({
+          message: "Some Error Occured",
         });
       }
     });

@@ -6,7 +6,7 @@ import {
   UserCard,
   CardViewLayout,
 } from "../../shared/styles";
-import { Pagination } from "antd";
+import { Card, Pagination } from "antd";
 import BtnGrp from "../../components/BtnGrp/BtnGrp";
 import GistPreview from "../../components/GistPreview/GistPreview";
 import DataTable from "../../components/DataTable/DataTable";
@@ -32,7 +32,7 @@ class HomePage extends React.Component {
   }
 
   handleOnPaginationChange(currentPage) {
-    this.props.fetchPublicGists({per_page: 10,page: currentPage});
+    this.props.fetchPublicGists({per_page: 9,page: currentPage});
   }
 
   onViewChange(selectedView) {
@@ -41,11 +41,11 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchPublicGists({per_page: 10,page: 1});
+    this.props.fetchPublicGists({per_page: 9,page: 1});
   }
 
-  onCardsPaginationChange(page) {
-    console.log(page);
+  onCardsPaginationChange(currentPage) {
+    this.props.fetchPublicGists({per_page: 9,page: currentPage});
   }
 
   render() {
@@ -67,9 +67,12 @@ class HomePage extends React.Component {
             <CardViewLayout>
               <CardsLayout>
                 {this.props.gists.map((gist, index) => (
-                  <UserCard style={{ maxWidth: "27rem" }}>
+                  // <UserCard style={{ width: "40%" }}>
+                  //   <GistPreview gist={gist.gist} key={index} />
+                  // </UserCard>
+                  <Card style={{"maxWidth":"100%", "width":"100%", "maxHeight":"100%", "height":"100%", "overflow":"hidden", "padding":"0"}}>
                     <GistPreview gist={gist.gist} key={index} />
-                  </UserCard>
+                  </Card>
                 ))}
               </CardsLayout>
               <Pagination

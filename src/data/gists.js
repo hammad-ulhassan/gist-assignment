@@ -65,3 +65,13 @@ export async function starGist(gist_id){
   const resp =  await fetch(`https://api.github.com/gists/${gist_id}/star`, {method: 'put', headers: myHeaders});
   return resp;
 }
+
+export async function unstartGist(gist_id){
+  const resp =  await fetch(`https://api.github.com/gists/${gist_id}/star`, {method: 'delete', headers: myHeaders});
+  return resp;
+}
+
+export async function checkGistStar(gist_id){
+  const resp =  await fetch(`https://api.github.com/gists/${gist_id}/star`, {method: 'get', headers: myHeaders});
+  return resp;
+}

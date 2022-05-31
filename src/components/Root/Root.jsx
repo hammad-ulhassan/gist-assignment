@@ -1,6 +1,6 @@
 import React from "react";
 import { RouterComponent } from "../RouterComponent/RouterComponent";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "../MainLayout/MainLayout";
 import { getAuthenticatedUserData } from "../../data/gists";
 import HomePage from "../../pages/HomePage/HomePage";
@@ -69,13 +69,14 @@ class Root extends React.Component {
           <Route
             path="login"
             // element={<LoginPage handleSubmit={this.onLogin} />}
-            element={<LoginPage/>}
+            element={<LoginPage />}
           />
           <Route path="create" element={<CreateGistPage />} />
           <Route path="edit/:id" element={<EditGistPage />} />
           <Route path="user/:login" element={<UserProfilePage />} />
           <Route path="me" element={<MyProfilePage />} />
           <Route path="search/:param" element={<SearchPage />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Route>
       </Routes>
     );

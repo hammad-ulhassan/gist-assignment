@@ -30,11 +30,17 @@ class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loaded: false, gists: [], userData: null };
+    this.navigateToProfile = this.navigateToProfile.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchUserData();
     this.props.fetchUserGists();
+  }
+
+  navigateToProfile(){
+    // this.props.navigate(`https://github.com/${this.props.selectedUserData?.login}`)
+    window.open(`https://github.com/${this.props.selectedUserData?.login}`);
   }
 
   render() {
@@ -58,7 +64,7 @@ class UserProfilePage extends React.Component {
                 {selectedUserData?.bio}
               </Typography.Title>
             </TextWordBreak>
-            <Button>GitHub Profile</Button>
+            <Button onClick={this.navigateToProfile}>GitHub Profile</Button>
           </FCFCWrapper>
           <UserProfileGistsList>
             {selectUserGistsStatus === "succeeded" &&

@@ -51,6 +51,11 @@ class GistsPage extends React.Component {
           message: "Gist Forked",
         });
       }
+      else{
+        notification.open({
+          message: "Some Error Occured",
+        });
+      }
     });
   }
 
@@ -59,6 +64,11 @@ class GistsPage extends React.Component {
       if (res.status === 204) {
         notification.open({
           message: "Gist Starred",
+        });
+      }
+      else{
+        notification.open({
+          message: "Some Error Occured",
         });
       }
     });

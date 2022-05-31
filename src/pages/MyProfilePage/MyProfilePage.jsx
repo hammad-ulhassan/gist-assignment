@@ -21,6 +21,7 @@ class MyProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.handleCreateGist = this.handleCreateGist.bind(this);
+    this.navigateToProfile = this.navigateToProfile.bind(this);
   }
 
   handleCreateGist() {
@@ -28,6 +29,11 @@ class MyProfilePage extends React.Component {
   }
 
   componentDidMount() {
+  }
+
+  navigateToProfile(){
+    window.open(`https://github.com/${this.props.myData?.login}`);
+
   }
 
   render() {
@@ -49,7 +55,7 @@ class MyProfilePage extends React.Component {
                 {this.props.myData?.bio}
               </Typography.Title>
             </TextWordBreak>
-            <Button>GitHub Profile</Button>
+            <Button onClick={this.navigateToProfile}>GitHub Profile</Button>
           </FCFCWrapper>
           <UserProfileGistsList>
             {this.props.myGistsStatus==='succeeded' &&
